@@ -1,0 +1,10 @@
+{
+    "name": "banus/users-newsletter",
+    "description": "Premium addon for Users plugin",
+    "autoload": {
+        "psr-4": {
+            "UsersNewsletter\\": "src/"
+        }
+    },
+    "require": {}
+}
