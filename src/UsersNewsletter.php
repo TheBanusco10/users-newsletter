@@ -19,12 +19,42 @@ class UsersNewsletter
             add_action('admin_notices', function () {
                 $this->users_newsletter_adminAlert('Premium addon for Users activated', 'success');
             });
+
+            add_action('wp_enqueue_scripts', [$this, 'users_newsletter_loadScripts']);
+
+            // Loading Ajax
+            add_action('wp_ajax_users_newsletter_sendEmailToUsers', [$this, 'users_newsletter_sendEmailToUsers']);
+            add_action('wp_ajax_nopriv_users_newsletter_sendEmailToUsers', [$this, 'users_newsletter_sendEmailToUsers']);
         }else {
             deactivate_plugins('users-newsletter/users-newsletter.php');
             add_action('admin_notices', function () {
                 $this->users_newsletter_adminAlert('Error activating Premium addon for Users');
             });
         }
+    }
+
+    function users_newsletter_loadScripts() {
+
+        // Scripts
+        wp_enqueue_script('users-newsletters-js', plugin_dir_url(__FILE__) . 'js/users-newsletter.js', ['jquery'], '1.0', true);
+
+        wp_localize_script('users-newsletters-js', 'ajax', ['ajaxurl' => admin_url('admin-ajax.php')]);
+
+        // Styles
+        wp_enqueue_style('users-newsletter-styles', plugin_dir_url(__FILE__) . 'css/styles.css');
+    }
+
+    function users_newsletter_sendEmailToUsers() {
+
+        // wp_mail($email, 'Test', 'Sending test email');
+
+        header('Content-Type: application/json');
+        echo json_encode([
+           'message' => 'Email sent',
+           'emails' => $_POST['emails']
+        ]);
+        die();
+
     }
 
     function users_newsletter_adminAlert($message = '', $alertType = 'error') {
