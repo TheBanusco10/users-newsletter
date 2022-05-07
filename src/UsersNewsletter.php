@@ -31,6 +31,7 @@ class UsersNewsletter
                 $this->users_newsletter_adminAlert('Error activating Premium addon for Users');
             });
         }
+
     }
 
     function users_newsletter_loadScripts() {
@@ -59,7 +60,7 @@ class UsersNewsletter
 
     function users_newsletter_adminAlert($message = '', $alertType = 'error') {
         ?>
-        <div class="notice notice-<?= $alertType ?>">
+        <div class="notice notice-<?= $alertType ?> is-dismissible">
             <p><?php _e( $message, 'users' ); ?></p>
         </div>
         <?php
